@@ -35,7 +35,7 @@ export default function Hero() {
             className="relative aspect-video rounded-lg overflow-hidden"
           >
             <img
-              src="https://images.unsplash.com/photo-1609220136736-443140cffec6"
+              src="https://st.depositphotos.com/1006318/4174/i/450/depositphotos_41744289-stock-photo-family-lying-on-grass.jpg"
               alt="Family planning their finances"
               className="object-cover w-full h-full"
             />
