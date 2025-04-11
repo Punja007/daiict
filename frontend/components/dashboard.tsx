@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   BarChart,
   CreditCard,
@@ -55,10 +56,12 @@ export default function Dashboard() {
           <span className="ml-2 text-lg font-semibold">Prosperify</span>
         </div>
         <nav className="space-y-1 px-2 py-4">
-          <Button variant="ghost" className="w-full justify-start">
-            <HomeIcon className="mr-3 h-5 w-5" />
-            Dashboard
-          </Button>
+          <Link href="/">
+            <Button variant="ghost" className="w-full justify-start">
+              <HomeIcon className="mr-3 h-5 w-5" />
+              Home
+            </Button>
+          </Link>
           <Button variant="ghost" className="w-full justify-start">
             <BarChart className="mr-3 h-5 w-5" />
             Transactions
