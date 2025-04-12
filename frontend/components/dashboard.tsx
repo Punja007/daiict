@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Link from "next/link";
 import {
   BarChart,
@@ -39,7 +39,72 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
+    
     <div className="flex min-h-screen bg-background">
+      {/* Display User Data */}
+      {/* <section className="p-4">
+          <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
+          {error && <p className="text-red-500">Error: {error}</p>}
+          {user ? (
+            <div>
+              <img
+                src={user.profilePicture}
+                alt={`${user.name}'s profile`}
+                className="w-24 h-24 rounded-full mb-4"
+              />
+              <h3 className="text-xl font-semibold">{user.name}</h3>
+              <p className="text-gray-600">{user.email}</p>
+
+              <h4 className="mt-6 text-lg font-bold">Total Income (Last 12 Months):</h4>
+              <ul>
+                {Object.entries(user.totalIncome).map(([month, income]) => (
+                  <li key={month} className="flex justify-between">
+                    <span>{month}</span>
+                    <span>₹{income.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <h4 className="mt-6 text-lg font-bold">Total Expenses:</h4>
+              <ul>
+                {Object.entries(user.totalExpenses).map(([category, amount]) => (
+                  <li key={category} className="flex justify-between">
+                    <span>{category}</span>
+                    <span>₹{amount.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <h4 className="mt-6 text-lg font-bold">Investment Distribution:</h4>
+              <ul>
+                {Object.entries(user.investmentDistribution).map(([type, details]) => (
+                  <li key={type} className="flex justify-between">
+                    <span>{type}</span>
+                    <span>
+                      Invested: ₹{details.invested.toLocaleString()}, Current Value: ₹
+                      {details.currentValue.toLocaleString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <h4 className="mt-6 text-lg font-bold">EMIs:</h4>
+              <ul>
+                {Object.entries(user.emis).map(([name, details]) => (
+                  <li key={name} className="flex justify-between">
+                    <span>{name}</span>
+                    <span>
+                      ₹{details.price.toLocaleString()} (Due:{" "}
+                      {new Date(details.dueDate).toLocaleDateString()})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p>Loading user data...</p>
+          )}
+        </section> */}
       {/* Mobile sidebar toggle */}
       <Button
         variant="outline"
@@ -350,5 +415,6 @@ export default function Dashboard() {
         </main>
       </div>
     </div>
+    
   );
 }
