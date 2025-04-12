@@ -14,7 +14,7 @@ embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM
 db = Chroma(persist_directory="../chroma_db", embedding_function=embed_model)
 
 # Initialize Gemini API
-genai.configure(api_key="AIzaSyDtmw4_Qx9p-JxkeUOfbYPmZ1vUYTn76L4")
+genai.configure(api_key="AIzaSyDPn3Ixb9GyLyIjv8UC2CBsi-AGnvQRzIk")
 
 # Store Chat Sessions (Memory)
 chat_sessions = {}  # { session_id: [{"role": "user/assistant", "content": "..."}] }
