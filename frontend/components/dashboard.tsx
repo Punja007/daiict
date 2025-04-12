@@ -194,7 +194,7 @@ export default function Dashboard() {
       <div className="flex-1 md:ml-64">
         <header className="border-b bg-card p-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold">Financial Dashboard</h1>
+          <h1 className="text-3xl font-semibold">Financial Dashboard</h1>
             <div className="text-sm text-muted-foreground">
               {format(new Date(), "MMMM yyyy")}
             </div>
