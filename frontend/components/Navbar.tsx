@@ -16,7 +16,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
+    <nav className="fixed w-full bg-background/95  z-50 border-b">
       <div className="container mx-auto px-10 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold text-primary dark:text-slate-200">

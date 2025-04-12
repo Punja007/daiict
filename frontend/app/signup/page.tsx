@@ -1,5 +1,5 @@
 "use client";
-
+import Navbar from "@/components/Navbar";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -44,13 +44,16 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
+<>
+    <Navbar />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="w-[400px] shadow-xl">
+
+        <Card className="w-[400px] shadow-xl mt-16">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
               Create an Account
@@ -130,5 +133,7 @@ export default function SignUpPage() {
         </Card>
       </motion.div>
     </div>
+
+    </>
   );
 }
