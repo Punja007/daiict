@@ -6,22 +6,21 @@ import ReactMarkdown from "react-markdown";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Loader2, Copy, Volume2 } from "lucide-react";
+import { Loader2, Copy, Volume2, Mic, MicOff } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 
 export default function ChatApp() {
   const [sessionId, setSessionId] = useState("");
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>(
-    []
-  );
+  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const storedSessionId =
-      localStorage.getItem("sessionId") || Date.now().toString();
+    const storedSessionId = localStorage.getItem("sessionId") || Date.now().toString();
     setSessionId(storedSessionId);
     setMessages(JSON.parse(localStorage.getItem("messages") || "[]"));
   }, []);
@@ -35,17 +34,19 @@ export default function ChatApp() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (voiceInput = "") => {
+    const finalInput = voiceInput || input;
+    if (!finalInput.trim()) return;
+
     setLoading(true);
-    const userMessage = { role: "user", content: input };
+    const userMessage = { role: "user", content: finalInput };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     try {
       const response = await axios.post("http://127.0.0.1:5000/chat", {
         session_id: sessionId,
-        query: input,
+        query: finalInput,
       });
 
       const botMessage = { role: "assistant", content: response.data.response };
@@ -65,6 +66,44 @@ export default function ChatApp() {
     speechSynthesis.speak(utterance);
   };
 
+  const toggleListening = () => {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      alert("Speech recognition not supported in this browser");
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;    
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.lang = "en-IN"; // You can tweak this for Hindi/Gujarati
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.maxAlternatives = 1;
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        sendMessage(transcript);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -81,9 +120,7 @@ export default function ChatApp() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`mb-3 flex ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`mb-3 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`p-3 rounded-lg max-w-xs flex flex-col items-center space-x-2 ${
@@ -95,18 +132,10 @@ export default function ChatApp() {
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
                   {msg.role === "assistant" && (
                     <div className="flex space-x-2 ml-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => copyToClipboard(msg.content)}
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => copyToClipboard(msg.content)}>
                         <Copy size={18} />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => speakText(msg.content)}
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => speakText(msg.content)}>
                         <Volume2 size={18} />
                       </Button>
                     </div>
@@ -144,15 +173,18 @@ export default function ChatApp() {
               disabled={loading}
             />
             <Button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               className="ml-2 bg-blue-500 text-white"
               disabled={loading || !input.trim()}
             >
-              {loading ? (
-                <Loader2 className="animate-spin" size={18} />
-              ) : (
-                "Send"
-              )}
+
+              {loading ? <Loader2 className="animate-spin" size={18} /> : "Send"}
+            </Button>
+            <Button
+              onClick={toggleListening}
+              className={`ml-2 ${isListening ? "bg-red-500" : "bg-green-500"} text-white`}
+            >
+              {isListening ? <MicOff size={18} /> : <Mic size={18} />}
             </Button>
           </CardContent>
         </Card>
