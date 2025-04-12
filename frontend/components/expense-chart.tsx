@@ -37,18 +37,61 @@ const data = [
 
 export function ExpenseChart() {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <AreaChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="day" tickLine={false} tickCount={10} />
-        <YAxis tickFormatter={(value) => `₹${value}`} width={80} />
-        <Tooltip
-          formatter={(value) => [`₹${value.toLocaleString()}`, "Amount"]}
-          labelFormatter={(label) => `Day: ${label}`}
-        />
-        <Area type="monotone" dataKey="amount" stroke="#f43f5e" fill="#fecdd3" strokeWidth={2} />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div className="w-full h-[400px] p-4 rounded-lg bg-card">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart 
+          data={data}
+          margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid 
+            strokeDasharray="0" 
+            stroke="#e2e8f0" 
+            vertical={false}
+          />
+          <XAxis 
+            dataKey="day"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#64748b', fontSize: 12 }}
+            dy={10}
+          />
+          <YAxis 
+            tickFormatter={(value) => `₹${value}`}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#64748b', fontSize: 12 }}
+            width={80}
+          />
+          <Tooltip
+            formatter={(value: number) => [`₹${value.toLocaleString()}`, "Daily Expense"]}
+            contentStyle={{
+              backgroundColor: '#1e293b',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              fontSize: '14px',
+              padding: '12px'
+            }}
+            cursor={{ stroke: '#3b82f6', strokeWidth: 1 }}
+          />
+          <Area 
+            type="natural"
+            dataKey="amount" 
+            stroke="#3b82f6" 
+            fill="url(#expenseGradient)"
+            strokeWidth={3}
+            dot={{ stroke: '#3b82f6', fill: 'white', strokeWidth: 2, r: 4 }}
+            activeDot={{ stroke: '#3b82f6', fill: '#3b82f6', strokeWidth: 2, r: 6 }}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
