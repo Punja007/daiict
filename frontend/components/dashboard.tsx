@@ -12,6 +12,7 @@ import {
   TrendingUp,
   User,
   X,
+  LogOut,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -29,9 +30,13 @@ import { ExpenseChart } from "@/components/expense-chart";
 import { IncomeVsExpenseChart } from "@/components/income-vs-expense";
 import { ExpenseCategoryChart } from "@/components/expense-category-chart";
 import { EmiTracker } from "@/components/emi-tracker";
+import { InvestmentTracker } from "@/components/investment-tracker";
+import { BudgetTracker } from "@/components/budget-tracker";
+import { ProfileSection } from "@/components/profile-section";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -62,26 +67,61 @@ export default function Dashboard() {
               Home
             </Button>
           </Link>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setActiveTab("expenses")}
+          >
             <BarChart className="mr-3 h-5 w-5" />
             Transactions
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setActiveTab("emis")}
+          >
             <CreditCard className="mr-3 h-5 w-5" />
             EMIs
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setActiveTab("budget")}
+          >
             <PieChart className="mr-3 h-5 w-5" />
             Budget
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setActiveTab("investments")}
+          >
             <TrendingUp className="mr-3 h-5 w-5" />
             Investments
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setActiveTab("profile")}
+          >
             <User className="mr-3 h-5 w-5" />
             Profile
           </Button>
+
+          {/* Add a spacer and logout button */}
+          <div className="mt-auto pt-6">
+            <Button 
+              variant="destructive" 
+              className="w-full justify-start"
+              onClick={() => {
+                // Add your logout logic here
+                console.log("Logging out...");
+              }}
+            >
+              <LogOut className="mr-3 h-5 w-5" />
+              Log Out
+            </Button>
+          </div>
         </nav>
       </div>
 
@@ -97,11 +137,14 @@ export default function Dashboard() {
         </header>
 
         <main className="p-4 md:p-6">
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="expenses">Expenses</TabsTrigger>
               <TabsTrigger value="emis">EMIs</TabsTrigger>
+              <TabsTrigger value="investments">Investments</TabsTrigger>
+              <TabsTrigger value="budget">Budget</TabsTrigger>
+              <TabsTrigger value="profile">Profile</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
@@ -293,6 +336,15 @@ export default function Dashboard() {
 
             <TabsContent value="emis" className="space-y-4">
               <EmiTracker />
+            </TabsContent>
+            <TabsContent value="investments" className="space-y-4">
+              <InvestmentTracker />
+            </TabsContent>
+            <TabsContent value="budget" className="space-y-4">
+              <BudgetTracker />
+            </TabsContent>
+            <TabsContent value="profile" className="space-y-4">
+              <ProfileSection />
             </TabsContent>
           </Tabs>
         </main>

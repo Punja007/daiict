@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -19,9 +22,11 @@ export default function Hero() {
               Personalized financial guidance for middle-class families. Plan your investments, budget, and secure your children's education with our AI-powered platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="w-full sm:w-auto">
-                Start Planning Now
-              </Button>
+              <Link href="/login">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Start Planning Now
+                </Button>
+              </Link>
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
                 Learn More
               </Button>
