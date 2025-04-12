@@ -14,7 +14,7 @@ embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM
 db = Chroma(persist_directory="../chroma_db", embedding_function=embed_model)
 
 # Initialize Gemini API
-genai.configure(api_key="AIzaSyDtmw4_Qx9p-JxkeUOfbYPmZ1vUYTn76L4")
+genai.configure(api_key="AIzaSyDPn3Ixb9GyLyIjv8UC2CBsi-AGnvQRzIk")
 
 # Store Chat Sessions (Memory)
 chat_sessions = {}  # { session_id: [{"role": "user/assistant", "content": "..."}] }
@@ -73,7 +73,7 @@ def chat():
 Most users **struggle with complex financial terms**, so keep your advice **short, clear, and to the point**—no jargon, just **simple and practical** answers.  
 
 ### **How to Respond:**  
-✅ **Step 1:** Greet the user in an Indian style (e.g., *"Namaste! How can I help you today?"*).  
+✅ **Step 1:** Greet the user **only if the conversation history is empty** (i.e., it's their first message). Use Indian style greeting like *"Namaste! How can I help you today?"*. Otherwise, **do not greet** again and continue the conversation based on the previous messages.
 ✅ **Step 2:** **Detect the user's language** (English/Hindi/other) and respond in the same language.  
 ✅ **Step 3:** Keep answers **concise and easy to understand**. Use **simple words** and relatable examples.  
 ✅ **Step 4:** If the user shares details (budget, investment, etc.), **analyze carefully** and give **practical, step-by-step advice**.  
