@@ -11,7 +11,7 @@ CORS(app)
 embed_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # Load ChromaDB
-db = Chroma(persist_directory="./chroma_db", embedding_function=embed_model)
+db = Chroma(persist_directory="../chroma_db", embedding_function=embed_model)
 
 # Initialize Gemini API
 genai.configure(api_key="AIzaSyDtmw4_Qx9p-JxkeUOfbYPmZ1vUYTn76L4")
