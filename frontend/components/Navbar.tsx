@@ -8,11 +8,11 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "Features", href: "#features" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },  // Changed from "/contact" to "#contact"
+    { label: "Home", href: "/" },
+    { label: "Contact", href: "#contact" },
     { label: "AI Assistant", href: "/chat" },
     { label: "Dashboard", href: "/dashboard" },
+    { label: "Login", href: "/login", isButton: true }, // Added isButton property
   ];
 
   return (
@@ -27,7 +27,15 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-10">
           {navItems.map((item) => (
-            item.href.startsWith('#') ? (
+            item.isButton ? (
+              <Button
+                key={item.href}
+                asChild
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium px-6 py-2 rounded-full shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+              >
+                <Link href={item.href}>{item.label}</Link>
+              </Button>
+            ) : item.href.startsWith('#') ? (
               <a
                 key={item.href}
                 href={item.href}
@@ -67,7 +75,15 @@ export default function Navbar() {
         <div className="md:hidden border-b">
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navItems.map((item) => (
-              item.href.startsWith('#') ? (
+              item.isButton ? (
+                <Button
+                  key={item.href}
+                  asChild
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium px-6 py-2 rounded-full shadow-lg hover:shadow-blue-500/25 transition-all duration-300 w-full"
+                >
+                  <Link href={item.href}>{item.label}</Link>
+                </Button>
+              ) : item.href.startsWith('#') ? (
                 <a
                   key={item.href}
                   href={item.href}

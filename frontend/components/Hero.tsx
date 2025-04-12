@@ -27,9 +27,11 @@ export default function Hero() {
                   Start Planning Now
                 </Button>
               </Link>
+              <Link href="/about">
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
                 Learn More
               </Button>
+              </Link>
             </div>
           </motion.div>
 
