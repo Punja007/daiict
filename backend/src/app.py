@@ -16,7 +16,7 @@ db = Chroma(persist_directory="../chroma_db", embedding_function=embed_model)
 # Initialize Gemini API
 genai.configure(api_key="AIzaSyDtmw4_Qx9p-JxkeUOfbYPmZ1vUYTn76L4")
 
-# Store Chat Sessions
+# Store Chat Sessions (Memory)
 chat_sessions = {}  # { session_id: [{"role": "user/assistant", "content": "..."}] }
 
 # Function to Retrieve Relevant Chunks
@@ -44,7 +44,7 @@ def new_chat():
     chat_sessions[session_id] = []  # Reset conversation history
     return jsonify({"message": "New chat started!"})
 
-# API Endpoint for Chatbot
+# API Endpoint for Chatbot with Memory
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
@@ -60,7 +60,10 @@ def chat():
     # Retrieve previous chat history
     chat_history = chat_sessions.get(session_id, [])
 
-    # Construct prompt with conversation history
+    # Append the new user query to the chat history
+    chat_history.append({"role": "user", "content": user_query})
+
+    # Construct the prompt including the conversation history and context
     full_prompt = f"""Here's the refined system prompt with **automatic language detection**:  
 
 ---
@@ -88,24 +91,26 @@ Most users **struggle with complex financial terms**, so keep your advice **shor
 ### **User Query & Context:**
 🔹 **User's Question:** {user_query}
 🔹 **Relevant Information:** {context}
+🔹 **Conversation History:** {chat_history}
 
 Even if no extra context is available, **focus on answering the user’s question simply and clearly**.
 
 🚀 **Language Rule:**
 - **Automatically detect the user's language** and respond in the same language.
 
----
+---  
 
 This ensures **natural, human-like responses in the user’s preferred language** while keeping things **short, simple, and effective**. 🚀
 """
 
-
     # Get AI Response
     bot_response = get_gemini_response(full_prompt)
 
-    # Update chat history
-    chat_sessions.setdefault(session_id, []).append({"role": "user", "content": user_query})
-    chat_sessions[session_id].append({"role": "assistant", "content": bot_response})
+    # Update chat history with assistant's response
+    chat_history.append({"role": "assistant", "content": bot_response})
+
+    # Save updated chat history back to the session
+    chat_sessions[session_id] = chat_history
 
     return jsonify({"response": bot_response})
 
