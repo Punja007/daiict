@@ -5,7 +5,7 @@ declare global {
     google?: any;
     googleTranslateElementInit?: () => void;
   }
-}
+}   
 
 const GoogleTranslate = () => {
   useEffect(() => {

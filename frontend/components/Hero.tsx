@@ -13,7 +13,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl font-bold leading-tight mb-6">
               Your AI Financial Advisor for a{" "}
               <span className="text-primary dark:text-slate-200">Prosperous</span> Future
             </h1>

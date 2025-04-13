@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import GoogleTranslate from "./GoogleTranslate";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -13,11 +14,12 @@ export default function Navbar() {
     { label: "AI Assistant", href: "/chat" },
     { label: "Dashboard", href: "/dashboard" },
     { label: "Login", href: "/login", isButton: true }, // Added isButton property
+    // { label: "Translate", href: "/GoogleTranslate"}, 
   ];
 
   return (  
-    <nav className="fixed w-full bg-background/95 py-4 h-100 z-50 border-b">
-      <div className="container mx-auto px-10 h-16 flex items-center justify-between">
+    <nav className="fixed w-full bg-background/95 py-4 h-[100px] z-50 border-b gap-20px">
+      <div className="container mx-auto px-10 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold text-primary dark:text-slate-200">
             Prosperify 💰
@@ -52,7 +54,12 @@ export default function Navbar() {
                 {item.label}
               </Link>
             )
+        
+
           ))}
+           <div className="translate-widget">
+            <GoogleTranslate />
+            </div>
         </div>
 
         {/* Mobile Menu Button */}
