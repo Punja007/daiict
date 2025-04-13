@@ -74,10 +74,34 @@ export default function ChatApp() {
       return;
     }
 
+<<<<<<< HEAD
+    if (!recognitionRef.current) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.lang = "en-IN";
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.maxAlternatives = 1;
+
+      recognitionRef.current.onresult = (event: { results: { transcript: any; }[][]; }) => {
+        const transcript = event.results[0][0].transcript;
+        sendMessage(transcript);
+      };
+
+      recognitionRef.current.onerror = (event: { error: any; }) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+=======
     if (listening) {
       recognitionRef.current?.stop();
       setListening(false);
       return;
+>>>>>>> 57df807e100459e740783bc0046f9e0fb89aee01
     }
 
     const recognition = new SpeechRecognition();

@@ -14,16 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 const db = mongoose.connection;
 db.once("open", () => console.log("MongoDB connected"));
 
-// API endpoint to fetch expenses
-app.get("/api/expenses", async (req, res) => {
-  try {
-    const expenses = await expenses.find(); // Fetch all expenses from the database
-    res.json(expenses); // Send the data as a JSON response
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch expenses" });
-  }
-});
-
 app.get("/api/user/:email", async (req, res) => {
   console.log("Request for email:", req.params.email);
   try {

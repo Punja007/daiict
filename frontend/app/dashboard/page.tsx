@@ -1,9 +1,5 @@
 "use client";
 import Dashboard from "@/components/dashboard";
-
-import { useRouter } from "next/navigation";
-import { FormProvider } from "@/context/FormContext";
-import FormWizard from "@/components/form-wizard";
 import GoogleTranslate from "@/components/GoogleTranslate";
 
 
