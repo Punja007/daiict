@@ -15,7 +15,7 @@ export default function Navbar() {
     { label: "Login", href: "/login", isButton: true }, // Added isButton property
   ];
 
-  return (
+  return (  
     <nav className="fixed w-full bg-background/95 py-4 h-100 z-50 border-b">
       <div className="container mx-auto px-10 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">

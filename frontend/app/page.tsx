@@ -6,6 +6,7 @@ import About from "@/components/About";
 import Footer from "@/components/Footer";
 import { AboutContact } from "@/components/about-contact";
 import GoogleTranslate from "@/components/GoogleTranslate";
+import GoogleTranslateButton from "@/components/GoogleTranslateButton";
 // import { useEffect, useState } from "react";
 
 export default function Home() {
