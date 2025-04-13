@@ -1,20 +1,26 @@
 "use client";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
 import { AboutContact } from "@/components/about-contact";
-import GoogleTranslate from "@/components/GoogleTranslate";
-import GoogleTranslateButton from "@/components/GoogleTranslateButton";
-// import { useEffect, useState } from "react";
+
 
 export default function Home() {
+  const [isTranslateOpen, setIsTranslateOpen] = useState<boolean>(false);
+
+  const handleTranslateToggle = (isOpen: boolean) => {
+    setIsTranslateOpen(isOpen);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <div className={`${isTranslateOpen ? 'pt-[40px]' : ''} transition-all duration-300`}>
+        <Navbar />
+      </div>
       <main>
-      <GoogleTranslate />
         <Hero />
         <Features />
         <About />
