@@ -75,3 +75,40 @@
   }
 }
 
+/* Hide Google Translate ugly stuff */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+/* KILL THE UGLY GOOGLE TRANSLATE TOP BAR */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* Remove the powered-by logo & extra junk */
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+
+/* Remove the bottom overlay sometimes added */
+.goog-te-banner-frame {
+  height: 0px !important;
+  width: 0px !important;
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+}
