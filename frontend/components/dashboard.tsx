@@ -34,77 +34,69 @@ import { InvestmentTracker } from "@/components/investment-tracker";
 import { BudgetTracker } from "@/components/budget-tracker";
 import { ProfileSection } from "@/components/profile-section";
 
+interface MonthlyIncomeVsExpenses {
+  [month: string]: {
+    income: number;
+    expences: number;
+  };
+}
+
+interface User {
+  name: string;
+  email: string;
+  profilePicture: string;
+  monthlyIncomeVsExpenses: MonthlyIncomeVsExpenses; // Monthly income and expenses (e.g., { "January 2025": { income: 50000, expense: 40000 } })
+  investmentDistribution: Record<string, { invested: number; currentValue: number }>;
+  emis: Record<string, { price: number; dueDate: string }>;
+}
+
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/user/bob.smith@example.com", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500">Error: {error}</p>;
+  }
 
   return (
     
     <div className="flex min-h-screen bg-background">
-      {/* Display User Data */}
-      {/* <section className="p-4">
-          <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
-          {error && <p className="text-red-500">Error: {error}</p>}
-          {user ? (
-            <div>
-              <img
-                src={user.profilePicture}
-                alt={`${user.name}'s profile`}
-                className="w-24 h-24 rounded-full mb-4"
-              />
-              <h3 className="text-xl font-semibold">{user.name}</h3>
-              <p className="text-gray-600">{user.email}</p>
 
-              <h4 className="mt-6 text-lg font-bold">Total Income (Last 12 Months):</h4>
-              <ul>
-                {Object.entries(user.totalIncome).map(([month, income]) => (
-                  <li key={month} className="flex justify-between">
-                    <span>{month}</span>
-                    <span>₹{income.toLocaleString()}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <h4 className="mt-6 text-lg font-bold">Total Expenses:</h4>
-              <ul>
-                {Object.entries(user.totalExpenses).map(([category, amount]) => (
-                  <li key={category} className="flex justify-between">
-                    <span>{category}</span>
-                    <span>₹{amount.toLocaleString()}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <h4 className="mt-6 text-lg font-bold">Investment Distribution:</h4>
-              <ul>
-                {Object.entries(user.investmentDistribution).map(([type, details]) => (
-                  <li key={type} className="flex justify-between">
-                    <span>{type}</span>
-                    <span>
-                      Invested: ₹{details.invested.toLocaleString()}, Current Value: ₹
-                      {details.currentValue.toLocaleString()}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <h4 className="mt-6 text-lg font-bold">EMIs:</h4>
-              <ul>
-                {Object.entries(user.emis).map(([name, details]) => (
-                  <li key={name} className="flex justify-between">
-                    <span>{name}</span>
-                    <span>
-                      ₹{details.price.toLocaleString()} (Due:{" "}
-                      {new Date(details.dueDate).toLocaleDateString()})
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p>Loading user data...</p>
-          )}
-        </section> */}
       {/* Mobile sidebar toggle */}
       <Button
         variant="outline"
@@ -255,65 +247,104 @@ export default function Dashboard() {
                   <IncomeVsExpenseChart />
                 </CardContent>
               </Card>
-
-              {/* Monthly Summary */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Income
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₹58,500</div>
-                    <p className="text-xs text-muted-foreground">
-                      <span className="text-emerald-500">↑ 8%</span> from last
-                      month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Expenses
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₹42,350</div>
-                    <p className="text-xs text-muted-foreground">
-                      <span className="text-rose-500">↑ 12%</span> from last
-                      month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Savings
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₹16,150</div>
-                    <p className="text-xs text-muted-foreground">
-                      <span className="text-emerald-500">↑ 3%</span> from last
-                      month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      EMI Burden
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">28%</div>
-                    <p className="text-xs text-muted-foreground">
-                      of monthly income
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+  {/* Total Income */}
+  <Card>
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">Total Income (Last Month)</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="text-2xl font-bold">
+        ₹
+        {user
+          ? (() => {
+              const lastMonth = Object.keys(user.monthlyIncomeVsExpenses).pop(); // Get the last month
+              return lastMonth
+                ? user.monthlyIncomeVsExpenses[lastMonth].income.toLocaleString()
+                : 0;
+            })()
+          : 0}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        <span className="text-emerald-500">↑ 8%</span> from the previous month
+      </p>
+    </CardContent>
+  </Card>
+
+  {/* Total Expenses */}
+  <Card>
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">Total Expenses (Last Month)</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="text-2xl font-bold">
+        ₹
+        {user
+          ? (() => {
+              const lastMonth = Object.keys(user.monthlyIncomeVsExpenses).pop(); // Get the last month
+              return lastMonth
+                ? user.monthlyIncomeVsExpenses[lastMonth].expences.toLocaleString()
+                : 0;
+            })()
+          : 0}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        <span className="text-rose-500">↑ 12%</span> from the previous month
+      </p>
+    </CardContent>
+  </Card>
+
+  {/* Savings */}
+  <Card>
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">Savings (Last Month)</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="text-2xl font-bold">
+        ₹
+        {user
+          ? (() => {
+              const lastMonth = Object.keys(user.monthlyIncomeVsExpenses).pop(); // Get the last month
+              return lastMonth
+                ? (
+                    user.monthlyIncomeVsExpenses[lastMonth].income -
+                    user.monthlyIncomeVsExpenses[lastMonth].expences
+                  ).toLocaleString()
+                : 0;
+            })()
+          : 0}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        <span className="text-emerald-500">↑ 3%</span> from the previous month
+      </p>
+    </CardContent>
+  </Card>
+
+  {/* EMI Burden */}
+  <Card>
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">EMI Burden</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="text-2xl font-bold">
+        {user
+          ? (() => {
+              const lastMonth = Object.keys(user.monthlyIncomeVsExpenses).pop(); // Get the last month
+              if (!lastMonth) return 0;
+              const totalIncome = user.monthlyIncomeVsExpenses[lastMonth].income;
+              const totalEmi = Object.values(user.emis).reduce(
+                (sum, { price }) => sum + price,
+                0
+              );
+              return ((totalEmi / totalIncome) * 100).toFixed(2); // EMI burden as a percentage
+            })()
+          : 0}
+        %
+      </div>
+      <p className="text-xs text-muted-foreground">of monthly income</p>
+    </CardContent>
+  </Card>
+</div>
             </TabsContent>
 
             <TabsContent value="expenses" className="space-y-4">

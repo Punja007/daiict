@@ -92,12 +92,12 @@ export default function ChatApp() {
       recognitionRef.current.interimResults = false;
       recognitionRef.current.maxAlternatives = 1;
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: { results: { transcript: any; }[][]; }) => {
         const transcript = event.results[0][0].transcript;
         sendMessage(transcript);
       };
 
-      recognitionRef.current.onerror = (event) => {
+      recognitionRef.current.onerror = (event: { error: any; }) => {
         console.error("Speech recognition error:", event.error);
         setIsListening(false);
       };

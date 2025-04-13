@@ -21,6 +21,7 @@ export default function Home() {
         <AboutContact />
       </main>
       <Footer />
+      
     </div>
   );
 }
