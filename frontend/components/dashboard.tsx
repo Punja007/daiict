@@ -60,7 +60,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/user/bob.smith@example.com", {
+        const response = await fetch("http://localhost:5000/api/user/diana@example.com", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

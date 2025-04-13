@@ -27,7 +27,7 @@ export function IncomeVsExpenseChart() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/user/bob.smith@example.com");
+        const response = await fetch("http://localhost:5000/api/user/diana@example.com");
         if (!response.ok) {
           throw new Error("Failed to fetch user data");
         }
