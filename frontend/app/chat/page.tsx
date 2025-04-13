@@ -74,34 +74,10 @@ export default function ChatApp() {
       return;
     }
 
-<<<<<<< HEAD
-    if (!recognitionRef.current) {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.lang = "en-IN";
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.maxAlternatives = 1;
-
-      recognitionRef.current.onresult = (event: { results: { transcript: any; }[][]; }) => {
-        const transcript = event.results[0][0].transcript;
-        sendMessage(transcript);
-      };
-
-      recognitionRef.current.onerror = (event: { error: any; }) => {
-        console.error("Speech recognition error:", event.error);
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-=======
     if (listening) {
       recognitionRef.current?.stop();
       setListening(false);
       return;
->>>>>>> 57df807e100459e740783bc0046f9e0fb89aee01
     }
 
     const recognition = new SpeechRecognition();
@@ -193,7 +169,9 @@ export default function ChatApp() {
           <CardContent className="flex items-center gap-3 p-6 border-t bg-gray-50 rounded-b-3xl">
             <Button
               onClick={handleVoiceInput}
-              className={`bg-white border hover:bg-blue-100 text-blue-600 rounded-full px-4 py-2 ${listening ? "animate-pulse" : ""}`}
+              className={`bg-white border hover:bg-blue-100 text-blue-600 rounded-full px-4 py-2 ${
+                listening ? "animate-pulse" : ""
+              }`}
               title="Speak"
             >
               <Mic size={20} />
